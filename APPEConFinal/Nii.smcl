@@ -1,0 +1,119 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/nii/Documents/APPEConFinal/Nii.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}30 Apr 2024, 18:13:49
+
+{com}. cd "/Users/nii/Documents/APPEConFinal"
+{res}/Users/nii/Documents/APPEConFinal
+
+{com}. * Load the dataset
+
+. use File1updated.dta, clear
+
+. * Basic summary statistics for CO2 emissions
+
+. * Create a dummy variable to identify the group exposed to the treatment
+
+. gen treated = (country == 23)
+
+. gen non_treated = (country != 23)
+
+. 
+. * Create a dummy variable to indicate the time when the treatment started
+
+. gen time_var = year - 2019
+
+. replace time_var = . if non_treated == 1
+{txt}(896 real changes made, 896 to missing)
+
+{com}. 
+. 
+. * Summary of outcome variable
+
+. bysort treated: sum co2_emission 
+
+{txt}{hline}
+-> treated = 0
+
+    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+co2_emission {c |}{res}        896    .9801339    1.440385        .04       8.56
+
+{txt}{hline}
+-> treated = 1
+
+    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+co2_emission {c |}{res}         32    8.491563    .6601471       7.09       9.95
+
+
+{com}. asdoc bysort treated: sum co2_emission 
+
+{txt}Summary for variables: co2_emission
+Group variable: __000000 (treated)
+
+{ralign 8:__000000} {...}
+{c |}         N      Mean        SD       Min       Max
+{hline 9}{c +}{hline 50}
+{ralign 8:0} {...}
+{c |}{...}
+ {res}      896  .9801339  1.440385       .04      8.56
+{txt}{ralign 8:1} {...}
+{c |}{...}
+ {res}       32  8.491563  .6601471      7.09      9.95
+{txt}{hline 9}{c +}{hline 50}
+{ralign 8:Total} {...}
+{c |}{...}
+ {res}      928  1.239149  1.974379       .04      9.95
+{txt}{hline 9}{c BT}{hline 50}
+{res}{txt}{p 0 4 2}
+(file {bf}
+Myfile.doc{rm}
+not found)
+{p_end}
+{res}Click to Open File:  {browse "Myfile.doc"}
+
+{com}. br
+
+. * Preserve the current state of the dataset for later restoration
+
+. preserve
+
+. 
+. * Collapse the data to mean CO2 emissions by year and treatment status
+
+. collapse (mean) co2_emission, by(year treated)
+{res}
+{com}. 
+. 
+. * Generate line plots for treated and non-treated groups over time
+
+. twoway (line co2_emission year if treated == 1, sort) (line co2_emission year if treated == 0, sort), ytitle(CO2 Emissions) xtitle(Year) title(Carbon Emission over Time) legend(on order(1 "South Africa" 2 "Other SSA"))
+{res}
+{com}. {res}{com}graph save "Graph" "/Users/nii/Documents/APPEConFinal/Get it.gph"
+{res}{txt}file {bf:/Users/nii/Documents/APPEConFinal/Get it.gph} saved
+
+{com}. graph save "Graph" "/Users/nii/Documents/APPEConFinal/Get it.gph", replace
+{res}{txt}file {bf:/Users/nii/Documents/APPEConFinal/Get it.gph} saved
+
+{com}. graph save "Graph" "/Users/nii/Documents/APPEConFinal/Get it.gph", replace
+{res}{txt}file {bf:/Users/nii/Documents/APPEConFinal/Get it.gph} saved
+
+{com}. graph save "Graph" "/Users/nii/Documents/APPEConFinal/Get it.gph", replace
+{res}{txt}file {bf:/Users/nii/Documents/APPEConFinal/Get it.gph} saved
+
+{com}. graph save "Graph" "/Users/nii/Documents/APPEConFinal/Get it.gph", replace
+{res}{txt}file {bf:/Users/nii/Documents/APPEConFinal/Get it.gph} saved
+
+{com}. graph export "/Users/nii/Documents/APPEConFinal/Get it.png", as(png) name("Graph")
+{txt}{p 0 4 2}
+file {bf}
+/Users/nii/Documents/APPEConFinal/Get it.png{rm}
+saved as
+PNG
+format
+{p_end}
+
+{com}. 
